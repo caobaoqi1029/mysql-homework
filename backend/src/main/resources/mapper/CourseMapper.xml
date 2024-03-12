@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="jz.cbq.backend.mapper.CourseMapper">
+
+    <select id="getMyAllCourseList" resultMap="stuChooseCourseMap">
+        select distinct a.course_id, a.*, b.state from t_course a left join t_choose_course b
+        on a.course_id=b.course_id
+        where a.major_name=#{majorName}
+        <if test="courseName!='' and courseName!=null">
+            and a.course_name like concat('%',#{courseName},'%')
+        </if>
+        <if test="coursePeriod!='' and coursePeriod!=null">
+            and a.course_period =#{coursePeriod}
+        </if>
+        <if test="schoolPeriodNum==7">
+            and a.course_period in('大一上','大一下','大二上','大二下','大三上','大三下','大四上','大四下')
+        </if>
+        <if test="schoolPeriodNum==6">
+            and a.course_period in('大一上','大一下','大二上','大二下','大三上','大三下','大四上')
+        </if>
+        <if test="schoolPeriodNum==5">
+            and a.course_period in('大一上','大一下','大二上','大二下','大三上','大三下')
+        </if>
+        <if test="schoolPeriodNum==4">
+            and a.course_period in('大一上','大一下','大二上','大二下','大三上')
+        </if>
+        <if test="schoolPeriodNum==3">
+            and a.course_period in('大一上','大一下','大二上','大二下')
+        </if>
+        <if test="schoolPeriodNum==2">
+            and a.course_period in('大一上','大一下','大二上')
+        </if>
+        <if test="schoolPeriodNum==1">
+            and a.course_period in('大一上','大一下')
+        </if>
+        <if test="schoolPeriodNum==0">
+            and a.course_period in('大一上')
+        </if>
+        order by b.state,field (a.course_period,'大一上','大一下','大二上','大二下','大三上','大三下','大四上','大四下') desc
+        limit #{limit1},#{limit2}
+    </select>
+    <select id="getMyAllCourseCount" resultType="java.lang.Integer">
+        select count(DISTINCT a.course_id) from t_course a left join t_choose_course b
+        on a.course_id=b.course_id
+        where a.major_name=#{majorName}
+        <if test="courseName!='' and courseName!=null">
+            and a.course_name like concat('%',#{courseName},'%')
+        </if>
+        <if test="coursePeriod!='' and coursePeriod!=null">
+            and a.course_period =#{coursePeriod}
+        </if>
+        <if test="schoolPeriodNum==7">
+            and a.course_period in('大一上','大一下','大二上','大二下','大三上','大三下','大四上','大四下')
+        </if>
+        <if test="schoolPeriodNum==6">
+            and  a.course_period in('大一上','大一下','大二上','大二下','大三上','大三下','大四上')
+        </if>
+        <if test="schoolPeriodNum==5">
+            and a.course_period in('大一上','大一下','大二上','大二下','大三上','大三下')
+        </if>
+        <if test="schoolPeriodNum==4">
+            and a.course_period in('大一上','大一下','大二上','大二下','大三上')
+        </if>
+        <if test="schoolPeriodNum==3">
+            and a.course_period in('大一上','大一下','大二上','大二下')
+        </if>
+        <if test="schoolPeriodNum==2">
+            and a.course_period in('大一上','大一下','大二上')
+        </if>
+        <if test="schoolPeriodNum==1">
+            and a.course_period in('大一上','大一下')
+        </if>
+        <if test="schoolPeriodNum==0">
+            and a.course_period in('大一上')
+        </if>
+        limit #{limit1},#{limit2}
+    </select>
+    <resultMap id="stuChooseCourseMap" type="jz.cbq.backend.entity.StuChooseCourseMap">
+        <id column="choose_course_id" property="chooseCourseId"/>
+        <result column="course_id" property="courseId"/>
+        <result column="major_name" property="majorId"/>
+        <result column="course_name" property="courseName"/>
+        <result column="if_degree" property="ifDegree"/>
+        <result column="major_name" property="majorName"/>
+        <result column="create_time" property="createTime"/>
+        <result column="course_period" property="coursePeriod"/>
+        <result column="stu_choose_num" property="stuChooseNum"/>
+        <result column="stu_id" property="stuId"/>
+        <result column="state" property="state"/>
+        <result column="stu_name" property="stuName"/>
+
+    </resultMap>
+</mapper>

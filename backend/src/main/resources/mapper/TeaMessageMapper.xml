@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="jz.cbq.backend.mapper.TeaMessageMapper">
+
+    <select id="getAllTeaMsg" resultMap="TeaMsgMap">
+        SELECT a.*, b.stu_name
+        FROM t_tea_message a
+        INNER JOIN t_student b
+        ON a.stu_id = b.stu_id
+        WHERE a.tea_id = #{teaId}
+        <if test="stuName!='' and stuName!=null">
+            AND b.stu_name LIKE concat('%',#{stuName},'%')
+        </if>
+        ORDER BY msg_time DESC
+    </select>
+    <resultMap id="TeaMsgMap" type="jz.cbq.backend.entity.TeaMsgMap">
+        <id property="msgId" column="msg_id"/>
+        <id property="stuId" column="stu_id"/>
+        <id property="teaId" column="tea_id"/>
+        <id property="stuName" column="stu_name"/>
+        <id property="msgContent" column="msg_content"/>
+        <id property="msgTime" column="msg_time"/>
+    </resultMap>
+</mapper>

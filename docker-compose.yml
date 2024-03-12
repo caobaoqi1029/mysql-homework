@@ -1,0 +1,60 @@
+version: '3.1'
+services:
+  mysql-3306:
+    container_name: mysql-3306
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mysql-homework
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data_3306:/var/lib/mysql
+    networks:
+      - backend_network
+    healthcheck:   # 添加健康检查
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]   # 使用 mysqladmin 命令进行健康检查
+      interval: 24h   # 检查间隔
+      timeout: 5s     # 超时时间
+      retries: 3      # 失败重试次数
+
+  mysql-3307:
+    container_name: mysql-3307
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mysql-demo
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data_3307:/var/lib/mysql
+    networks:
+      - backend_network
+    healthcheck:   # 添加健康检查
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]   # 使用 mysqladmin 命令进行健康检查
+      interval: 24h   # 检查间隔
+      timeout: 5s     # 超时时间
+      retries: 3      # 失败重试次数
+
+  redis-6379:
+    container_name: redis-6379
+    image: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - backend_network
+    healthcheck:   # 添加健康检查
+      test: ["CMD", "redis-cli", "ping"]   # 使用 redis-cli 命令进行健康检查
+      interval: 24h   # 检查间隔
+      timeout: 5s     # 超时时间
+      retries: 3      # 失败重试次数
+
+volumes:
+  mysql_data_3306:
+  mysql_data_3307:
+
+networks:
+  backend_network:
