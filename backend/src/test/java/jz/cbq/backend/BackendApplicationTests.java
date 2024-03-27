@@ -3,6 +3,8 @@ package jz.cbq.backend;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.annotation.Resource;
+
 import static jz.cbq.backend.utils.JWTUtils.createToken;
 import static jz.cbq.backend.utils.JWTUtils.getUserIdByToken;
 
@@ -15,7 +17,6 @@ import static jz.cbq.backend.utils.JWTUtils.getUserIdByToken;
  */
 @SpringBootTest
 public class BackendApplicationTests {
-
     @Test
     void testJWT() {
         String token = createToken("CaoBaoQi");
@@ -27,5 +28,11 @@ public class BackendApplicationTests {
         } catch (Exception e) {
             System.out.println("token 无效");
         }
+    }
+
+    @Test
+    void testPwd()
+    {
+
     }
 }
